@@ -1,66 +1,49 @@
-## Foundry
+# Day 2 - Greeting Contract and Deployment Process
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+## Project Setup
 
-Foundry consists of:
-
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
-
-## Documentation
-
-https://book.getfoundry.sh/
-
-## Usage
-
-### Build
+### Initialise Foundry project
 
 ```shell
-$ forge build
+$ forge init
 ```
 
-### Test
-
-```shell
-$ forge test
-```
-
-### Format
-
-```shell
-$ forge fmt
-```
-
-### Gas Snapshots
-
-```shell
-$ forge snapshot
-```
-
-### Anvil
-
+### Start local Ethereum node using Anvil
 ```shell
 $ anvil
 ```
+#### This runs a local Ethereum RPC node on http://127.0.0.1:8545 for testing and deployment.
 
-### Deploy
-
+### Compile the smart contract 
 ```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
+$ forge build
+```
+### Deploying the Contract
+```shell
+$ forge create Greeting --interactive --broadcast
 ```
 
-### Cast
-
+### Interacting with the Contract using cast
+#### Read data (getInfo())
 ```shell
-$ cast <subcommand>
+$ cast call 0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512 "getInfo()" --rpc-url http://127.0.0.1:8545
 ```
 
-### Help
-
+#### Write data (setInfo(string,string))
 ```shell
-$ forge --help
-$ anvil --help
-$ cast --help
+$ cast send 0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512 "setInfo(string,string)" "Deepak" "Blockchain dev" \
+  --private-key <YOUR_PRIVATE_KEY> --rpc-url http://127.0.0.1:8545
 ```
+
+#### Clearing data (clearInfo())
+```shell
+$ cast send 0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512 "clearInfo()" \
+  --private-key <YOUR_PRIVATE_KEY> --rpc-url http://127.0.0.1:8545
+```
+
+##### Verify it is cleared: 
+```shell
+$ cast call 0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512 "getInfo()(string,string)" --rpc-url http://127.0.0.1:8545
+```
+
+## This completes Day 2 of the project
